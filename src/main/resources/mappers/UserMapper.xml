@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.UserMapper">
+    <insert id="save" parameterType="com.exam.pojo.entity.User">
+        insert into user(phone, password, name, clazz, sex, type, email) value ( #{one.phone,jdbcType=VARCHAR},
+            #{one.password,jdbcType=VARCHAR},
+            #{one.name,jdbcType=VARCHAR},
+            #{one.clazz,jdbcType=VARCHAR},
+            #{one.sex,jdbcType=VARCHAR},
+            #{one.type,jdbcType=INTEGER},
+            #{one.email,jdbcType=VARCHAR}
+            )
+
+    </insert>
+    <update id="update" parameterType="com.exam.pojo.VO.UserVO">
+        update user
+        <set>
+            <if test="one.phone!=null">
+                phone = #{one.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="one.password!=null">
+                password = #{one.password,jdbcType=VARCHAR}
+            </if>
+            <if test="one.name!=null">
+                name = #{one.name,jdbcType=VARCHAR}
+            </if>
+            <if test="one.sex!=null">
+                sex = #{one.sex,jdbcType=VARCHAR}
+            </if>
+            <if test="one.type!=null">
+                type = #{one.type,jdbcType=VARCHAR}
+            </if>
+            <if test="one.email!=null">
+                email = #{one.email,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where email = #{one.email,jdbcType=VARCHAR}
+    </update>
+    <update id="updatePassword">
+        update user
+        set password = #{password}
+        where id = #{id}
+
+    </update>
+
+    <select id="getAllUser" resultType="com.exam.pojo.entity.User">
+        select *
+        from `user`
+    </select>
+    <select id="getByEmail" resultType="com.exam.pojo.entity.User">
+        select *
+        from user
+        where email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getListByClazz" resultType="com.exam.pojo.result.helper.ScoreIMP" parameterType="java.lang.String">
+        SELECT id,
+               phone,
+               `name`,
+               clazz
+        FROM `user`
+        WHERE
+            clazz = #{clazz}
+    </select>
+    <select id="getListById" resultType="com.exam.pojo.result.helper.ScoreIMP" parameterType="java.lang.String">
+        SELECT id,
+               phone,
+               NAME,
+               clazz
+        FROM `user`
+        WHERE phone = #{phone}
+    </select>
+    <select id="getListByName" resultType="com.exam.pojo.result.helper.ScoreIMP" parameterType="java.lang.String">
+        SELECT id,
+               phone,
+               NAME,
+               clazz
+        FROM `user`
+        WHERE name = #{Name}
+    </select>
+    <select id="getById" resultType="com.exam.pojo.entity.User">
+        select *
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="getClazzName" resultType="java.lang.String">
+        SELECT DISTINCT clazz
+        FROM `user`
+    </select>
+    <select id="getOneUserIdByClazzName" resultType="java.lang.Long" parameterType="java.lang.String">
+        SELECT id
+        FROM `user`
+        WHERE clazz = #{s}
+        ORDER BY RAND() LIMIT 1
+    </select>
+    <select id="getUserByPhone" resultType="com.exam.pojo.entity.User">
+        select *
+        from user
+        where phone = #{phone}
+    </select>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.UserExamMapper" >
+
+
+    <insert id="addUserExam" parameterType="com.exam.pojo.entity.UserExam">
+        INSERT INTO user_exam (user_id, exam_id, score, `join`)
+            VALUE
+            (#{userId},#{examId},#{score},#{join})
+    </insert>
+    <select id="getExamId" resultType="java.lang.Long" parameterType="long">
+        select exam_id from user_exam where user_id=#{userId}
+    </select>
+    <select id="getUserExamById" resultType="com.exam.pojo.result.helper.UserExamImp"
+            parameterType="java.lang.Long">
+        SELECT
+            exam.title,
+            us.exam_id,
+            us.score,
+            us.`join`,
+            us.user_id
+        FROM
+            user_exam as us
+                LEFT JOIN exam ON exam.id=us.exam_id
+
+        WHERE
+            us.user_id = #{userId} and us.exam_id=#{examId}
+    </select>
+
+    <update id="updateScoreByTwoId">
+        update user_exam
+        set score=#{score}
+        where user_id = #{userId}
+          and exam_id = #{examId}
+    </update>
+
+    <select id="getExamInfoByUser" resultType="com.exam.pojo.dto.UserExamInfo">
+        select ue.user_id as userId, ue.exam_id as examId, ue.join as `join`, e.title as examName, e.start_time as startTime, e.end_time as endTime
+        from user_exam as ue, exam as e
+        where ue.user_id = #{userId} and ue.exam_id = e.id
+    </select>
+
+    <update id="setUserJoinExam">
+        update user_exam
+        set `join`=1
+        where user_id = #{userId}
+          and exam_id = #{examId}
+    </update>
+
+</mapper>

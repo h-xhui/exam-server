@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.QuestionMapper" >
+    <insert id="addQuestion" parameterType="com.exam.pojo.entity.Question">
+        insert into question(id, user_id, content, answer, type, update_time)
+            value(null,#{userId},#{content},#{answer},#{type},#{updateTime})
+    </insert>
+
+    <update id="update" parameterType="com.exam.pojo.entity.Question">
+        update question set user_id=#{userId},content=#{content},answer=#{answer},type=#{type} update_time=#{updateTime} where id=#{id}
+    </update>
+    <delete id="delete" parameterType="int">
+        delete from question where id=#{id}
+    </delete>
+    <select id="getQuestionList" resultType="com.exam.pojo.entity.Question">
+        select *
+        from question
+        order by update_time desc
+    </select>
+    <select id="getQuestionById" resultType="com.exam.pojo.entity.Question" parameterType="int">
+        select *
+        from question
+        where id = #{id}
+    </select>
+
+    <select id="getChoiceById" parameterType="long" resultType="string">
+        select c.content as content
+        from choice as c,
+             question as q
+        where c.question_id = q.id
+          and q.id = #{questionId}
+    </select>
+    <select id="getScoreByAndExamId" resultType="java.lang.Long">
+        select pq.score
+        from paper_question as pq
+        where pq.paper_id = (select e.papers_Id from exam as e where e.id = #{examId})
+          and pq.question_id = #{questionId}
+    </select>
+
+    <select id="getNew" resultType="java.lang.Long">
+        select max(id)
+        from question
+    </select>
+</mapper>

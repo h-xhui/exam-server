@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.TagMapper" >
+
+    <insert id="addTag" parameterType="com.exam.dao.TagMapper">
+        insert into tag(id,name,update_time,user_name)value (null,#{name},#{updateTime},#{userName})
+    </insert>
+
+    <update id="update" parameterType="com.exam.pojo.entity.Tag">
+        update tag set name=#{name},update_time=#{updateTime} ,user_name=#{userName} where id=#{id}
+    </update>
+    <delete id="delete" parameterType="long">
+        delete from tag where id=#{id}
+    </delete>
+
+
+    <select id="getTagList" resultType="com.exam.pojo.entity.Tag">
+        select *from tag order by update_time desc
+    </select>
+    <select id="getTagById" resultType="com.exam.pojo.entity.Tag" parameterType="int">
+        select *from tag where id=#{id}
+    </select>
+    <select id="getTagByName" resultType="com.exam.pojo.entity.Tag">
+        select *from tag where name=#{name}
+    </select>
+
+    <insert id="save" parameterType="com.exam.pojo.entity.Tag" useGeneratedKeys="true" keyProperty="id">
+        insert into tag (name,update_time,user_name)
+        values (#{name},#{updateTime},#{userName})
+    </insert>
+
+</mapper>

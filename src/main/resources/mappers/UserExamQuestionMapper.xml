@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.UserExamQuestionMapper">
+    <update id="updateScoreByThreeId">
+        update user_exam_question
+        set score = #{score}
+        where user_id = #{userId}
+          and exam_Id = #{examId}
+          and question_id = #{questionId}
+    </update>
+
+    <select id="getUserExamQuestionByUserId" resultType="com.exam.pojo.entity.UserExamQuestion" parameterType="long">
+        select *
+        from user_exam_question
+        where user_id = #{userId}
+    </select>
+    <select id="getByUserIdAndExamId" resultType="com.exam.pojo.entity.UserExamQuestion">
+        select *
+        from user_exam_question
+        where user_id = #{userId}
+          and exam_id = #{examId}
+    </select>
+    <select id="getScoreByUserIdExamID" resultType="java.lang.Long">
+        select score
+        from user_exam_question
+        where user_id = #{userId}
+          and exam_id = #{examId}
+    </select>
+    <update id="autoJudgePaper">
+        update user_exam_question as uea
+        inner join
+        (
+            select e.id, q.answer, pq.score
+            from exam as e, question as q, paper_question as pq
+            where e.papers_id = pq.paper_id and q.id = pq.question_id
+        ) as tmp
+        on uea.exam_id = tmp.id and uea.answer = tmp.answer
+        set uea.score = tmp.score
+        WHERE uea.exam_id = #{examId} and uea.user_id = #{userId}
+    </update>
+</mapper>

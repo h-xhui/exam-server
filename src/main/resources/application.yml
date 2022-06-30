@@ -1,0 +1,58 @@
+spring:
+#数据源配置
+  datasource:
+    url: jdbc:mysql://106.15.8.109:3306/exam?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: TNZlX,9&(s_f
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  #redis
+  #  redis:
+  #    host: 106.15.8.109
+  #    port: 6379
+  #    password: hjh990324863
+
+  #本地redis
+  redis:
+    host: 10.9.136.222
+    port: 6379
+    password: 123321
+
+  #rabbitmq
+  #  rabbitmq:
+  #    host: 106.15.8.109
+  #    port: 5672
+  #    username: admin
+  #    password: hjh990324863
+  #    virtual-host: /
+
+  #邮箱
+  mail:
+    host: smtp.qq.com
+    username: ktl18wzj@qq.com
+    password: plzayhygwjgedgjb
+    test-connection: false
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+  #JWT
+exam:
+  jwt:
+    header: authorization
+    expiry: 604800
+    secret: sd45sa4fa4a54d56regerergxZ8j8rt1
+
+#mybatis配置
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  port: 8082
